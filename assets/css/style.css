@@ -361,7 +361,10 @@ p { margin: 0 0 1em; }
 /* Official product PNGs share one canvas (1993x2250), so keeping that ratio
    preserves the correct relative scale between bottles, jugs and tubs. */
 .prod-card__media img {
-  width: 100%; aspect-ratio: 1993 / 2250; object-fit: contain; padding: 3% 8%;
+  /* height:auto lets aspect-ratio drive the box; without it the width/height
+     attributes (kept for CLS) would pin the height and stretch the card. */
+  width: 100%; height: auto; aspect-ratio: 1993 / 2250;
+  object-fit: contain; padding: 3% 8%;
   transition: transform 0.45s var(--ease-pop);
   filter: drop-shadow(0 12px 18px rgba(35, 37, 75, 0.16));
 }
