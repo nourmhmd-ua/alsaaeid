@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@400;500;600;700;800&family=Rubik:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/css/style.css?v=20261111c">
+<link rel="stylesheet" href="/assets/css/style.css?v=20261111d">
 
 <!-- SEO -->
 <link rel="canonical" href="https://alsaaeid.com/en/">
@@ -104,8 +104,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <main>
   <!-- Hero -->
   <section class="hero">
-    <div class="hero__blob hero__blob--gold" aria-hidden="true"></div>
-    <div class="hero__blob hero__blob--green" aria-hidden="true"></div>
+    <div class="hero__bg" aria-hidden="true">
+      <picture>
+        <source media="(max-width: 900px)" type="image/webp" srcset="/assets/img/photos/hero-bg-mobile.webp">
+        <source media="(max-width: 900px)" srcset="/assets/img/photos/hero-bg-mobile.jpg">
+        <source type="image/webp" srcset="/assets/img/photos/hero-bg.webp">
+        <img src="/assets/img/photos/hero-bg.jpg" alt="" width="2560" height="1280" fetchpriority="high">
+      </picture>
+    </div>
     <div class="hero__inner">
       <div class="hero__copy">
         <div class="hero__badge-row reveal-stagger is-visible">
@@ -128,13 +134,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <a class="social-btn" style="background:var(--sage-100);color:var(--ink)" href="https://www.youtube.com/@Alsaieedjuices" target="_blank" rel="noopener" aria-label="YouTube"><svg aria-hidden="true"><use href="#i-yt"/></svg></a>
           <a class="social-btn" style="background:var(--sage-100);color:var(--ink)" href="https://snapchat.com/t/v3rIKJzM" target="_blank" rel="noopener" aria-label="Snapchat"><svg aria-hidden="true"><use href="#i-sc"/></svg></a>
         </div>
-      </div>
-      <div class="hero__art reveal is-visible">
-        <span class="hero__sticker hero__sticker--top"><svg aria-hidden="true"><use href="#i-spark"/></svg> 100% natural flavor</span>
-        <div class="hero__photo-frame">
-          <img src="/assets/img/photos/hero-ingredients.jpg" alt="Al Saaeid juices: lemon mint, mango passion and hibiscus on a bright yellow background" fetchpriority="high">
-        </div>
-        <span class="hero__sticker hero__sticker--bottom"><svg aria-hidden="true"><use href="#i-drop"/></svg> Cool &amp; refreshing</span>
       </div>
     </div>
     <div class="wave" aria-hidden="true">

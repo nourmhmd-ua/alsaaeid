@@ -203,11 +203,36 @@ p { margin: 0 0 1em; }
 }
 
 /* ---------- Hero ---------- */
-.hero { position: relative; overflow: hidden; background: var(--cream); }
-.hero__inner {
-  display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 48px; align-items: center;
-  max-width: var(--container); margin-inline: auto; padding: 72px 24px 120px;
+/* Full-bleed photo that dissolves into the cream page colour on the text side. */
+.hero {
+  position: relative; overflow: hidden; isolation: isolate; background: var(--cream);
+  min-height: clamp(560px, 84vh, 820px); display: flex; flex-direction: column; justify-content: center;
 }
+.hero__bg { position: absolute; inset: 0; z-index: -1; }
+.hero__bg picture, .hero__bg img { display: block; width: 100%; height: 100%; }
+.hero__bg img {
+  object-fit: cover; object-position: left center;
+  opacity: 0.92; animation: hero-drift 16s ease-out both;
+}
+/* English reads left-to-right, so mirror the produce to the right-hand side. */
+[dir="ltr"] .hero__bg img { transform: scaleX(-1); }
+.hero__bg::after {
+  content: ""; position: absolute; inset: 0;
+  background:
+    linear-gradient(to bottom, rgba(255, 253, 246, 0.55) 0%, rgba(255, 253, 246, 0) 18%, rgba(255, 253, 246, 0) 78%, rgba(255, 253, 246, 0.35) 100%),
+    linear-gradient(to left, var(--cream) 0%, rgba(255, 253, 246, 0.94) 30%, rgba(255, 253, 246, 0.6) 50%, rgba(255, 253, 246, 0.12) 72%, rgba(255, 253, 246, 0) 100%);
+}
+[dir="ltr"] .hero__bg::after {
+  background:
+    linear-gradient(to bottom, rgba(255, 253, 246, 0.55) 0%, rgba(255, 253, 246, 0) 18%, rgba(255, 253, 246, 0) 78%, rgba(255, 253, 246, 0.35) 100%),
+    linear-gradient(to right, var(--cream) 0%, rgba(255, 253, 246, 0.94) 30%, rgba(255, 253, 246, 0.6) 50%, rgba(255, 253, 246, 0.12) 72%, rgba(255, 253, 246, 0) 100%);
+}
+@keyframes hero-drift { from { scale: 1.08; } to { scale: 1; } }
+
+.hero__inner {
+  width: 100%; max-width: var(--container); margin-inline: auto; padding: 72px 24px 120px;
+}
+.hero__copy { max-width: 590px; }
 .hero__badge-row { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 22px; }
 .hero__badge {
   display: inline-flex; align-items: center; gap: 8px;
@@ -223,40 +248,14 @@ p { margin: 0 0 1em; }
 .hero__social { display: flex; align-items: center; gap: 10px; }
 .hero__social-label { font-size: 0.9rem; font-weight: 500; color: var(--body); }
 
-.hero__art { position: relative; }
-.hero__photo-frame {
-  position: relative; border-radius: var(--radius-xl); overflow: hidden;
-  aspect-ratio: 1 / 1; box-shadow: var(--shadow-lg);
-  transform: rotate(1.5deg);
-}
-.hero__photo-frame img { width: 100%; height: 100%; object-fit: cover; }
-.hero__sticker {
-  position: absolute; z-index: 3;
-  font-family: var(--font-display); font-weight: 800; font-size: 0.95rem; line-height: 1.3;
-  padding: 12px 18px; border-radius: 18px; box-shadow: var(--shadow);
-  display: inline-flex; align-items: center; gap: 9px;
-  animation: floaty 5s ease-in-out infinite;
-}
-.hero__sticker svg { width: 22px; height: 22px; flex: none; }
-.hero__sticker--top { top: 26px; inset-inline-start: -14px; background: var(--gold-400); color: var(--ink); transform: rotate(-4deg); }
-.hero__sticker--bottom { bottom: 34px; inset-inline-end: -10px; background: var(--green-600); color: #fff; transform: rotate(3deg); animation-delay: 1.6s; }
-@keyframes floaty {
-  0%, 100% { translate: 0 0; }
-  50% { translate: 0 -10px; }
-}
-
-.hero__blob {
-  position: absolute; z-index: -1; border-radius: 50%;
-  filter: blur(60px); opacity: 0.5;
-}
-.hero__blob--gold { width: 420px; height: 420px; background: #FFE9A8; top: -120px; inset-inline-end: -100px; }
-.hero__blob--green { width: 380px; height: 380px; background: #CDE8D2; bottom: -140px; inset-inline-start: -120px; }
 
 @media (max-width: 900px) {
-  .hero__inner { grid-template-columns: 1fr; padding-block: 44px 96px; gap: 40px; }
-  .hero__photo-frame { aspect-ratio: 1 / 1; max-width: 480px; margin-inline: auto; }
-  .hero__sticker--top { inset-inline-start: 4px; }
-  .hero__sticker--bottom { inset-inline-end: 4px; }
+  .hero { min-height: 0; }
+  .hero__bg img { object-position: center; opacity: 0.85; }
+  .hero__bg::after, [dir="ltr"] .hero__bg::after {
+    background: linear-gradient(to bottom, rgba(255, 253, 246, 0.9) 0%, rgba(255, 253, 246, 0.8) 45%, rgba(255, 253, 246, 0.62) 100%);
+  }
+  .hero__inner { padding-block: 56px 104px; }
 }
 
 /* Wavy divider */
@@ -688,8 +687,6 @@ p { margin: 0 0 1em; }
   .wave svg { height: 36px; }
   .wa-float { width: 56px; height: 56px; bottom: 18px; inset-inline-end: 18px; }
   .wa-float svg { width: 28px; height: 28px; }
-  .hero__sticker { font-size: 0.82rem; padding: 9px 14px; }
-  .hero__sticker svg { width: 18px; height: 18px; }
   .prod-card__body { padding: 16px 16px 18px; }
   .wa-card { padding: 30px 24px; }
   .wa-card__number { font-size: 1.28rem; }
