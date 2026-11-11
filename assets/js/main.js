@@ -82,6 +82,68 @@
     }
   }
 
+  /* Auto slider (homepage new arrivals): endless loop, arrows, autoplay */
+  document.querySelectorAll("[data-slider]").forEach(function (slider) {
+    var track = slider.querySelector(".slider__track");
+    if (!track || !track.children.length) return;
+    var originals = Array.prototype.slice.call(track.children);
+    var n = originals.length;
+    /* Clone the set once so the loop can run on seamlessly */
+    originals.forEach(function (card) {
+      var c = card.cloneNode(true);
+      c.setAttribute("aria-hidden", "true");
+      c.setAttribute("data-clone", "");
+      c.querySelectorAll("a, button").forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+      track.appendChild(c);
+    });
+    var rtl = getComputedStyle(track).direction === "rtl";
+    var sign = rtl ? -1 : 1;
+    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var timer = null, paused = false, visible = true;
+    function step() {
+      var gap = parseFloat(getComputedStyle(track).columnGap) || 0;
+      return originals[0].getBoundingClientRect().width + gap;
+    }
+    function pos() { return Math.abs(track.scrollLeft); }
+    function jump(p) { track.scrollTo({ left: sign * p, behavior: "instant" }); }
+    function go(dir) {
+      var s = step(), setW = n * s, jumped = false;
+      if (dir > 0 && pos() >= setW - 2) { jump(pos() - setW); jumped = true; }
+      if (dir < 0 && pos() <= 2) { jump(pos() + setW); jumped = true; }
+      var target = Math.round(pos() / s + dir) * s;
+      var run = function () { track.scrollTo({ left: sign * target, behavior: reduce ? "instant" : "smooth" }); };
+      /* A smooth scroll in the same frame as the jump gets dropped, so wait a frame */
+      if (jumped) requestAnimationFrame(function () { requestAnimationFrame(run); }); else run();
+    }
+    /* Keep a swiped position inside the first set */
+    var settle;
+    track.addEventListener("scroll", function () {
+      clearTimeout(settle);
+      settle = setTimeout(function () {
+        var setW = n * step();
+        if (pos() >= setW - 2) jump(pos() - setW);
+      }, 400);
+    }, { passive: true });
+    function stop() { clearInterval(timer); timer = null; }
+    function start() {
+      stop();
+      if (reduce || paused || !visible || document.hidden) return;
+      timer = setInterval(function () { go(1); }, 3500);
+    }
+    slider.querySelector(".slider__btn--next").addEventListener("click", function () { go(1); });
+    slider.querySelector(".slider__btn--prev").addEventListener("click", function () { go(-1); });
+    slider.addEventListener("mouseenter", function () { paused = true; stop(); });
+    slider.addEventListener("mouseleave", function () { paused = false; start(); });
+    slider.addEventListener("focusin", function () { paused = true; stop(); });
+    slider.addEventListener("focusout", function () { paused = false; start(); });
+    track.addEventListener("touchstart", stop, { passive: true });
+    track.addEventListener("touchend", function () { setTimeout(start, 3000); }, { passive: true });
+    document.addEventListener("visibilitychange", start);
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(function (entries) { visible = entries[0].isIntersecting; start(); }, { threshold: 0.3 }).observe(slider);
+    } else { start(); }
+  });
+
   /* Current year */
   document.querySelectorAll("[data-year]").forEach(function (el) {
     el.textContent = new Date().getFullYear();
