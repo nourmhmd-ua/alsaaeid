@@ -721,3 +721,37 @@ p { margin: 0 0 1em; }
   .prod-card, .retailer-card, .q-item, .g-step { border-color: var(--ink); }
   .prod-card__alt, .contact-item span { color: var(--body); }
 }
+
+/* ---------- New arrivals (highlighted) ---------- */
+.new-arrivals {
+  position: relative; overflow: hidden;
+  background:
+    radial-gradient(circle at 92% 85%, rgba(245, 168, 28, 0.18) 0 180px, transparent 181px),
+    linear-gradient(160deg, #FFF8E1 0%, #FFEDB3 55%, #FFE08A 100%);
+}
+.new-arrivals::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0.35;
+  background-image: radial-gradient(rgba(217, 142, 7, 0.35) 1.2px, transparent 1.3px);
+  background-size: 22px 22px;
+}
+.new-arrivals .container { position: relative; }
+.new-arrivals .section-head h2 { color: var(--ink); }
+.new-arrivals .section-head p { color: #5E5440; }
+.new-arrivals .eyebrow { background: var(--ink); color: var(--gold-300); }
+.new-arrivals .eyebrow .pulse {
+  width: 8px; height: 8px; border-radius: 50%; background: var(--gold-400); flex: none;
+  box-shadow: 0 0 0 0 rgba(255, 197, 39, 0.7); animation: na-pulse 1.8s infinite;
+}
+@keyframes na-pulse { 70% { box-shadow: 0 0 0 9px rgba(255, 197, 39, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 197, 39, 0); } }
+@media (prefers-reduced-motion: reduce) { .new-arrivals .eyebrow .pulse { animation: none; } }
+.new-arrivals .prod-card { border: 2px solid rgba(245, 168, 28, 0.45); box-shadow: 0 14px 34px rgba(160, 110, 0, 0.14); }
+.new-arrivals .prod-card:hover { border-color: var(--gold-500); }
+.new-arrivals .prod-card__media { background: linear-gradient(165deg, #FFFFFF 0%, #FFFBEF 60%, #FFF3D1 100%); }
+.prod-card__new {
+  position: absolute; top: 14px; inset-inline-end: 14px; z-index: 1;
+  font-family: var(--font-display); font-weight: 800; font-size: 0.74rem; letter-spacing: 0.02em;
+  color: var(--ink); background: var(--gold-400); padding: 5px 12px; border-radius: 999px;
+  box-shadow: 0 4px 10px rgba(217, 142, 7, 0.35);
+}
+.filter-btn--new { border-color: var(--gold-500); color: var(--gold-600); }
+.filter-btn--new.is-active { background: var(--gold-400); color: var(--ink); }

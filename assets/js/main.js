@@ -60,7 +60,7 @@
   if (filterBtns.length && cards.length) {
     var applyFilter = function (cat) {
       cards.forEach(function (card) {
-        var show = cat === "all" || card.dataset.cat === cat;
+        var show = cat === "all" || card.dataset.cat === cat || (cat === "new" && card.hasAttribute("data-new"));
         card.classList.toggle("is-hidden", !show);
       });
       filterBtns.forEach(function (b) {
